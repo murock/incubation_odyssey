@@ -26,7 +26,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   @override
   Future<void>? onLoad() async {
     await super.onLoad();
-    // debugMode = true;
 
     player = Player();
     debugText = TextComponent(text: 'Heat: ' + _heat.toString());
@@ -34,11 +33,27 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     add(BackgroundHolder());
 
     add(player);
-    //add(PowerUp(numFrames: 1, textureSize: Vector2(151, 151)));
-    add(PowerUpSpawner());
-    // add(Egg());
+    add(
+      PowerUpSpawner(
+        textureHeight: 151,
+        textureWidth: 151,
+      ),
+    );
 
     add(debugText);
+
+    // debugMode = true;
+    // add(Egg());
+
+    // final sprite = await loadSprite('power_ups/ice_cube.png');
+    // add(
+    //   SpriteComponent(
+    //     sprite: sprite,
+    //     position: size / 2,
+    //     size: sprite.srcSize * 2,
+    //     anchor: Anchor.center,
+    //   ),
+    // );
   }
 
   @override

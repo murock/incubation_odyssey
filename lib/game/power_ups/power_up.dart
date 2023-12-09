@@ -7,6 +7,7 @@ import 'package:incubation_odyssey/game/variables.dart';
 
 enum PowerUpType {
   iceCube,
+  fire,
 }
 
 class PowerUp extends SpriteAnimationComponent with HasGameRef {
@@ -21,7 +22,8 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
   final PowerUpType powerUpType;
 
   final Map<PowerUpType, String> imageSourceMap = {
-    PowerUpType.iceCube: 'power_ups/ice_cube.png'
+    PowerUpType.iceCube: 'power_ups/ice_cube.png',
+    PowerUpType.fire: 'power_ups/fire.png',
   };
 
   static double _speed = Variables.powerUpSpeed + Variables.playerBaseSpeed;
