@@ -40,8 +40,7 @@ class Player extends SpriteAnimationGroupComponent
   void update(double dt) {
     _speedY += Variables.gravity * dt;
     y += _speedY * dt;
-    print(y);
-    print(_yMax);
+
     if (_isOnGround()) {
       if (_isJumping) {
         _isJumping = false;
