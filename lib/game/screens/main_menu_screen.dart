@@ -80,6 +80,7 @@ class _ZoomingButtonState extends State<ZoomingButton>
           style: TextStyle(
             color: Colors.white,
             fontSize: 60,
+            fontFamily: 'SinglyLinked'
           ),
         ),
       ),

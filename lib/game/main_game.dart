@@ -11,21 +11,21 @@ import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
-  double _heat = 0;
+  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   int _health = 3;
 
-  double get heat => _heat;
+  double get heat => heatNotifier.value;
   set heat(double currentheat) {
-    _heat = currentheat;
-    debugText.text = 'Heat: $_heat Health: $_health';
-    player.egg.setState(health: _health, heat: _heat);
+    heatNotifier.value = currentheat;
+    debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
+    player.egg.setState(health: _health, heat: heatNotifier.value);
   }
 
   int get health => _health;
   set health(int currentHealth) {
     _health = currentHealth;
-    debugText.text = 'Heat: $_heat Health: $_health';
-    player.egg.setState(health: _health, heat: _heat);
+    debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
+    player.egg.setState(health: _health, heat: heatNotifier.value);
   }
 
   @override
@@ -38,7 +38,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
 
     player = Player();
-    debugText = TextComponent(text: 'Heat: $_heat Health: $_health');
+    debugText = TextComponent(text: 'Heat: ${heatNotifier.value} Health: $_health');
 
     add(BackgroundHolder());
 
