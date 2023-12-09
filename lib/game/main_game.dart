@@ -13,21 +13,23 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
   double _heat = 0;
-  double _health = 3;
+  int _health = 3;
 
   double get heat => _heat;
   void set heat(double currentheat) {
     _heat = currentheat;
     debugText.text =
         'Heat: ' + _heat.toString() + ' Health: ' + _health.toString();
+    player.egg.setState(Health: _health, heat: _heat);
   }
 
-  double get health => _health;
-  void set health(double currentHealth) {
+  int get health => _health;
+  void set health(int currentHealth) {
     print(currentHealth);
     _health = currentHealth;
     debugText.text =
         'Heat: ' + _heat.toString() + ' Health: ' + _health.toString();
+    player.egg.setState(Health: _health, heat: _heat);
   }
 
   @override
