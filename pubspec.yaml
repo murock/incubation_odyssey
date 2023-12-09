@@ -24,3 +24,8 @@ flutter:
     - assets/images/parallax/
     - assets/images/power_ups/
     - assets/images/player/
+
+  fonts:
+    - family: SamuraiBlast
+      fonts:
+        - asset: assets/fonts/SamuraiBlast.ttf
