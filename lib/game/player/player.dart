@@ -17,6 +17,7 @@ class Player extends SpriteAnimationGroupComponent
   double _speedY = 0.0;
   final double _yMax = 700;
   bool _isJumping = false;
+  bool _isDashing = false;
   late Egg egg;
 
   @override
@@ -77,7 +78,6 @@ class Player extends SpriteAnimationGroupComponent
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.spike) {
         game.health -= 1;
-        print('trigger');
         other.removeFromParent();
       }
     }

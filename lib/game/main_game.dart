@@ -4,34 +4,27 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
-import 'package:incubation_odyssey/game/player/egg.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
-import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
+  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   int _health = 3;
 
-  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
-
   double get heat => heatNotifier.value;
-
-  void set heat(double currentheat) {
+  set heat(double currentheat) {
     heatNotifier.value = currentheat;
-    debugText.text =
-        'Health: ' + _health.toString();
-    player.egg.setState(Health: _health, heat: heatNotifier.value);
+    debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
+    player.egg.setState(health: _health, heat: heatNotifier.value);
   }
 
   int get health => _health;
-  void set health(int currentHealth) {
-    print(currentHealth);
+  set health(int currentHealth) {
     _health = currentHealth;
-    debugText.text =
-        ' Health: ' + _health.toString();
-    player.egg.setState(Health: _health, heat: heatNotifier.value);
+    debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
+    player.egg.setState(health: _health, heat: heatNotifier.value);
   }
 
   @override
@@ -42,8 +35,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     await super.onLoad();
 
     player = Player();
-    debugText = TextComponent(
-        text: ' Health: ' + _health.toString());
+    debugText = TextComponent(text: 'Heat: ${heatNotifier.value} Health: $_health');
 
     add(BackgroundHolder());
 
@@ -76,7 +68,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
       RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     final isZ = keysPressed.contains(LogicalKeyboardKey.keyZ);
     final isKeyDown = event is RawKeyDownEvent;
-    // TODO: implement onKeyEvent
     if (isZ && isKeyDown) {
       player.jump();
       return KeyEventResult.handled;

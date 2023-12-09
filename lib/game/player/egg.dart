@@ -1,9 +1,6 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
-import 'package:incubation_odyssey/game/variables.dart';
 
 enum EggState {
   wyvern,
@@ -97,53 +94,53 @@ class Egg extends SpriteGroupComponent with HasGameRef {
     );
   }
 
-  void setState({required int Health, required double heat}) {
+  void setState({required int health, required double heat}) {
     if (heat == 0) {
-      if (Health == 3) {
+      if (health == 3) {
         current = EggState.chicken;
-      } else if (Health == 2) {
+      } else if (health == 2) {
         current = EggState.chickenDamaged1;
-      } else if (Health == 1) {
+      } else if (health == 1) {
         current = EggState.chickenDamaged2;
       } else {
         current = EggState.chickenHatched;
       }
     } else if (heat == 10) {
-      if (Health == 3) {
+      if (health == 3) {
         current = EggState.lizard;
-      } else if (Health == 2) {
+      } else if (health == 2) {
         current = EggState.lizardDamaged1;
-      } else if (Health == 1) {
+      } else if (health == 1) {
         current = EggState.lizardDamaged2;
       } else {
         current = EggState.lizardHatched;
       }
     } else if (heat == 20) {
-      if (Health == 3) {
+      if (health == 3) {
         current = EggState.dragon;
-      } else if (Health == 2) {
+      } else if (health == 2) {
         current = EggState.dragonDamaged1;
-      } else if (Health == 1) {
+      } else if (health == 1) {
         current = EggState.dragonDamaged2;
       } else {
         current = EggState.dragonHatched;
       }
     } else if (heat == -10) {
-      if (Health == 3) {
+      if (health == 3) {
         current = EggState.penguin;
-      } else if (Health == 2) {
+      } else if (health == 2) {
         current = EggState.penguinDamaged1;
-      } else if (Health == 1) {
+      } else if (health == 1) {
         current = EggState.penguinDamaged2;
       } else {
         current = EggState.penguinHatched;
       }
     } else if (heat == -20) {
-      if (Health == 3) {
+      if (health == 3) {
         current = EggState.wyvern;
-      } else if (Health == 2) {
+      } else if (health == 2) {
         current = EggState.wyvernDamaged1;
-      } else if (Health == 1) {
+      } else if (health == 1) {
         current = EggState.wyvernDamaged2;
       } else {
         current = EggState.wyvernHatched;

@@ -6,15 +6,24 @@ import 'package:flame/components.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 enum PowerUpType {
-  iceCube,
   fire,
+  coal,
+  heatwave,
+  snowflake,
+  water,
+  iceCube,
   spike,
 }
 
 class PowerUpData {
-  PowerUpData({required this.srcLoc, required this.size});
+  PowerUpData({
+    required this.srcLoc,
+    required this.size,
+    this.srcPos,
+  });
   final String srcLoc;
   final Vector2 size;
+  final Vector2? srcPos;
 }
 
 class PowerUp extends SpriteAnimationComponent with HasGameRef {
@@ -27,10 +36,36 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
   final PowerUpType powerUpType;
 
   final Map<PowerUpType, PowerUpData> imageSourceMap = {
-    PowerUpType.iceCube:
-        PowerUpData(srcLoc: 'power_ups/ice_cube.png', size: Vector2(151, 151)),
-    PowerUpType.fire:
-        PowerUpData(srcLoc: 'power_ups/fire.png', size: Vector2(98, 76)),
+    PowerUpType.fire: PowerUpData(
+      srcLoc: 'power_ups/power_up_sprite_sheet.png',
+      size: Vector2(100, 100),
+      srcPos: Vector2(0, 0),
+    ),
+    PowerUpType.coal: PowerUpData(
+      srcLoc: 'power_ups/power_up_sprite_sheet.png',
+      size: Vector2(100, 100),
+      srcPos: Vector2(0, 100),
+    ),
+    PowerUpType.heatwave: PowerUpData(
+      srcLoc: 'power_ups/power_up_sprite_sheet.png',
+      size: Vector2(100, 100),
+      srcPos: Vector2(0, 200),
+    ),
+    PowerUpType.snowflake: PowerUpData(
+      srcLoc: 'power_ups/power_up_sprite_sheet.png',
+      size: Vector2(100, 100),
+      srcPos: Vector2(100, 0),
+    ),
+    PowerUpType.water: PowerUpData(
+      srcLoc: 'power_ups/power_up_sprite_sheet.png',
+      size: Vector2(100, 100),
+      srcPos: Vector2(100, 100),
+    ),
+    PowerUpType.iceCube: PowerUpData(
+      srcLoc: 'power_ups/power_up_sprite_sheet.png',
+      size: Vector2(100, 100),
+      srcPos: Vector2(100, 200),
+    ),
     PowerUpType.spike:
         PowerUpData(srcLoc: 'power_ups/spike.png', size: Vector2(151, 151)),
   };
@@ -58,6 +93,9 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
         amount: numFrames,
         stepTime: 0.1,
         textureSize: imageSourceMap[powerUpType]!.size,
+        texturePosition: imageSourceMap[powerUpType]?.srcPos != null
+            ? imageSourceMap[powerUpType]!.srcPos!
+            : null,
       ),
     );
   }
