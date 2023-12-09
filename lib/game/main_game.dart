@@ -38,7 +38,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
 
     player = Player();
-    debugText = TextComponent(text: 'Heat: ${heatNotifier.value} Health: $_health');
+    debugText =
+        TextComponent(text: 'Heat: ${heatNotifier.value} Health: $_health');
 
     add(BackgroundHolder());
 
@@ -52,7 +53,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
     add(debugText);
 
-    // debugMode = true;
+    //debugMode = true;
     // add(Egg());
 
     // final sprite = await loadSprite('power_ups/ice_cube.png');
