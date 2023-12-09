@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:incubation_odyssey/game/animations/egg_component.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
+import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 enum PlayerState {
@@ -19,6 +19,9 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   FutureOr<void> onLoad() async {
+    RectangleHitbox hitbox = RectangleHitbox();
+    add(hitbox);
+
     final SpriteAnimation idle = await game.loadSpriteAnimation(
       'egg_sprite_sheet.png',
       SpriteAnimationData.sequenced(
@@ -52,6 +55,15 @@ class Player extends SpriteAnimationGroupComponent
     }
 
     super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
+    if (other is PowerUp) {
+      game.debugText.text = 'COLLISION';
+    }
   }
 
   void jump() {

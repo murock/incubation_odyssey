@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
+  late TextComponent debugText;
 
   @override
   Color backgroundColor() => Colors.purple;
@@ -17,10 +19,13 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     await super.onLoad();
 
     player = Player();
+    debugText = TextComponent(text: 'Debug Text');
 
     add(BackgroundHolder());
     add(player);
     add(PowerUp(numFrames: 1, textureSize: Vector2(151, 151)));
+
+    add(debugText);
   }
 
   @override
