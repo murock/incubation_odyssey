@@ -3,7 +3,7 @@ class Variables {
   static double gravity = 800;
   static double jumpForce = 800;
 
-  static double playerBaseSpeed = 120;
+  static double playerBaseSpeed = 220;
 
   static double powerUpSpeed = 150;
   static double powerUpPathAmplitude = 150;

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
+import 'package:incubation_odyssey/game/variables.dart';
 
 class BackgroundHolder extends Component {
   late final Background background;
@@ -47,6 +48,7 @@ class Background extends ParallaxComponent with HasGameRef {
       )
     ];
 
-    parallax = Parallax(parrallaxLayers, baseVelocity: Vector2(120, 0));
+    parallax = Parallax(parrallaxLayers,
+        baseVelocity: Vector2(Variables.playerBaseSpeed, 0));
   }
 }
