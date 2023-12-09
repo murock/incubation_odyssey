@@ -12,6 +12,13 @@ import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
+  double _heat = 0;
+
+  double get heat => _heat;
+  void set heat(double currentheat) {
+    _heat = currentheat;
+    debugText.text = 'Heat: ' + _heat.toString();
+  }
 
   @override
   Color backgroundColor() => Colors.black;
@@ -19,17 +26,17 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   @override
   Future<void>? onLoad() async {
     await super.onLoad();
-    debugMode = true;
+    // debugMode = true;
 
     player = Player();
-    debugText = TextComponent(text: 'Debug Text');
+    debugText = TextComponent(text: 'Heat: ' + _heat.toString());
 
-    //  add(BackgroundHolder());
+    add(BackgroundHolder());
 
     add(player);
     //add(PowerUp(numFrames: 1, textureSize: Vector2(151, 151)));
     add(PowerUpSpawner());
-    add(Egg());
+    // add(Egg());
 
     add(debugText);
   }

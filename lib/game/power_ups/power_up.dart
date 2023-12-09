@@ -5,11 +5,24 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
+enum PowerUpType {
+  iceCube,
+}
+
 class PowerUp extends SpriteAnimationComponent with HasGameRef {
-  PowerUp({required this.numFrames, required this.textureSize});
+  PowerUp({
+    required this.numFrames,
+    required this.textureSize,
+    required this.powerUpType,
+  });
 
   final int numFrames;
   final Vector2 textureSize;
+  final PowerUpType powerUpType;
+
+  final Map<PowerUpType, String> imageSourceMap = {
+    PowerUpType.iceCube: 'power_ups/ice_cube.png'
+  };
 
   static double _speed = Variables.powerUpSpeed + Variables.playerBaseSpeed;
 
@@ -29,7 +42,7 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
 
   Future<void> _setupAnimation() async {
     animation = await SpriteAnimation.load(
-      'power_ups/ice_cube.png',
+      imageSourceMap[powerUpType]!,
       SpriteAnimationData.sequenced(
         amount: numFrames,
         stepTime: 0.1,

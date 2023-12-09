@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:incubation_odyssey/game/variables.dart';
 
 enum EggState {
   wyvern,
@@ -34,7 +35,6 @@ class Egg extends SpriteGroupComponent with HasGameRef {
 
   @override
   FutureOr<void> onLoad() async {
-    scale = Vector2.all(3);
     final double damaged1Pos = _textureHeight;
     final double damaged2Pos = _textureHeight * 2;
     final double hatchedPos = _textureHeight * 3;
@@ -75,17 +75,17 @@ class Egg extends SpriteGroupComponent with HasGameRef {
       EggState.lizardHatched:
           await _getSprite(srcPosition: Vector2(lizardXPos, hatchedPos)),
       EggState.dragon:
-          await _getSprite(srcPosition: Vector2(lizardXPos, _textureHeight)),
+          await _getSprite(srcPosition: Vector2(dragonXPos, _textureHeight)),
       EggState.dragonDamaged1:
-          await _getSprite(srcPosition: Vector2(lizardXPos, damaged1Pos)),
+          await _getSprite(srcPosition: Vector2(dragonXPos, damaged1Pos)),
       EggState.dragonDamaged2:
-          await _getSprite(srcPosition: Vector2(lizardXPos, damaged2Pos)),
+          await _getSprite(srcPosition: Vector2(dragonXPos, damaged2Pos)),
       EggState.dragonHatched:
-          await _getSprite(srcPosition: Vector2(lizardXPos, hatchedPos)),
+          await _getSprite(srcPosition: Vector2(dragonXPos, hatchedPos)),
     };
     current = EggState.dragonHatched;
-    x = 800;
-    y = 900;
+    // x = 800;
+    // y = 900;
     return super.onLoad();
   }
 

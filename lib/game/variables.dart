@@ -1,4 +1,5 @@
 class Variables {
+  static double gameScale = 3;
   static double gravity = 800;
   static double jumpForce = 800;
 

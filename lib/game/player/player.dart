@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
+import 'package:incubation_odyssey/game/player/egg.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
@@ -16,6 +17,7 @@ class Player extends SpriteAnimationGroupComponent
   double _speedY = 0.0;
   final double _yMax = 700;
   bool _isJumping = false;
+  late Egg egg;
 
   @override
   FutureOr<void> onLoad() async {
@@ -34,8 +36,12 @@ class Player extends SpriteAnimationGroupComponent
     animations = {
       PlayerState.idle: idle,
     };
-    scale = Vector2.all(20);
+    scale = Vector2.all(Variables.gameScale);
     current = PlayerState.idle;
+
+    egg = Egg();
+    egg.parent = this;
+    add(egg);
     return super.onLoad();
   }
 
@@ -62,7 +68,10 @@ class Player extends SpriteAnimationGroupComponent
     super.onCollision(intersectionPoints, other);
 
     if (other is PowerUp) {
-      game.debugText.text = 'COLLISION';
+      final PowerUp powerUp = other;
+      if (powerUp.powerUpType == PowerUpType.iceCube) {
+        game.heat -= 10;
+      }
     }
   }
 
