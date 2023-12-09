@@ -83,7 +83,7 @@ class Egg extends SpriteGroupComponent with HasGameRef {
       EggState.dragonHatched:
           await _getSprite(srcPosition: Vector2(dragonXPos, hatchedPos)),
     };
-    current = EggState.dragonHatched;
+    current = EggState.chicken;
     // x = 800;
     // y = 900;
     return super.onLoad();
@@ -95,5 +95,59 @@ class Egg extends SpriteGroupComponent with HasGameRef {
       srcSize: Vector2(_textureWidth, _textureHeight),
       'player/egg_sprite_sheet.png',
     );
+  }
+
+  void setState({required int Health, required double heat}) {
+    if (heat == 0) {
+      if (Health == 3) {
+        current = EggState.chicken;
+      } else if (Health == 2) {
+        current = EggState.chickenDamaged1;
+      } else if (Health == 1) {
+        current = EggState.chickenDamaged2;
+      } else {
+        current = EggState.chickenHatched;
+      }
+    } else if (heat == 10) {
+      if (Health == 3) {
+        current = EggState.lizard;
+      } else if (Health == 2) {
+        current = EggState.lizardDamaged1;
+      } else if (Health == 1) {
+        current = EggState.lizardDamaged2;
+      } else {
+        current = EggState.lizardHatched;
+      }
+    } else if (heat == 20) {
+      if (Health == 3) {
+        current = EggState.dragon;
+      } else if (Health == 2) {
+        current = EggState.dragonDamaged1;
+      } else if (Health == 1) {
+        current = EggState.dragonDamaged2;
+      } else {
+        current = EggState.dragonHatched;
+      }
+    } else if (heat == -10) {
+      if (Health == 3) {
+        current = EggState.penguin;
+      } else if (Health == 2) {
+        current = EggState.penguinDamaged1;
+      } else if (Health == 1) {
+        current = EggState.penguinDamaged2;
+      } else {
+        current = EggState.penguinHatched;
+      }
+    } else if (heat == -20) {
+      if (Health == 3) {
+        current = EggState.wyvern;
+      } else if (Health == 2) {
+        current = EggState.wyvernDamaged1;
+      } else if (Health == 1) {
+        current = EggState.wyvernDamaged2;
+      } else {
+        current = EggState.wyvernHatched;
+      }
+    }
   }
 }

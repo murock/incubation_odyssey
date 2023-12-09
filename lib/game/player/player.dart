@@ -72,9 +72,12 @@ class Player extends SpriteAnimationGroupComponent
       if (powerUp.powerUpType == PowerUpType.iceCube) {
         game.heat -= 10;
         other.removeFromParent();
-      }
-      if (powerUp.powerUpType == PowerUpType.fire) {
+      } else if (powerUp.powerUpType == PowerUpType.fire) {
         game.heat += 10;
+        other.removeFromParent();
+      } else if (powerUp.powerUpType == PowerUpType.spike) {
+        game.health -= 1;
+        print('trigger');
         other.removeFromParent();
       }
     }

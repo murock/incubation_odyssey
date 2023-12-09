@@ -13,11 +13,23 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
   double _heat = 0;
+  int _health = 3;
 
   double get heat => _heat;
   void set heat(double currentheat) {
     _heat = currentheat;
-    debugText.text = 'Heat: ' + _heat.toString();
+    debugText.text =
+        'Heat: ' + _heat.toString() + ' Health: ' + _health.toString();
+    player.egg.setState(Health: _health, heat: _heat);
+  }
+
+  int get health => _health;
+  void set health(int currentHealth) {
+    print(currentHealth);
+    _health = currentHealth;
+    debugText.text =
+        'Heat: ' + _heat.toString() + ' Health: ' + _health.toString();
+    player.egg.setState(Health: _health, heat: _heat);
   }
 
   @override
@@ -28,7 +40,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     await super.onLoad();
 
     player = Player();
-    debugText = TextComponent(text: 'Heat: ' + _heat.toString());
+    debugText = TextComponent(
+        text: 'Heat: ' + _heat.toString() + ' Health: ' + _health.toString());
 
     add(BackgroundHolder());
 
