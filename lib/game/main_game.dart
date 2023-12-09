@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
+import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
@@ -23,7 +24,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
     add(BackgroundHolder());
     add(player);
-    add(PowerUp(numFrames: 1, textureSize: Vector2(151, 151)));
+    //add(PowerUp(numFrames: 1, textureSize: Vector2(151, 151)));
+    add(PowerUpSpawner());
 
     add(debugText);
   }
