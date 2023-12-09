@@ -1,7 +1,7 @@
 class Variables {
   static double gameScale = 3;
-  static double gravity = 800;
-  static double jumpForce = 800;
+  static double gravity = 400;
+  static double jumpForce = 600;
 
   static double playerBaseSpeed = 220;
 
