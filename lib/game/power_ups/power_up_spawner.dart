@@ -44,11 +44,9 @@ class PowerUpSpawner extends Component with HasGameRef {
     var intValue = Random().nextInt(PowerUpType
         .values.length); // Value is >= 0 and < the total number of power ups
     late final PowerUpType powerUpType = PowerUpType.values[intValue];
-    print(intValue);
-    print(powerUpType);
+
     PowerUp powerUp = PowerUp(
       numFrames: 1,
-      textureSize: Vector2(151, 151),
       powerUpType: powerUpType,
     );
     add(powerUp);
