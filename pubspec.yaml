@@ -29,3 +29,6 @@ flutter:
     - family: SamuraiBlast
       fonts:
         - asset: assets/fonts/SamuraiBlast.ttf
+    - family: SinglyLinked
+      fonts:
+        - asset: assets/fonts/SinglyLinked.otf
