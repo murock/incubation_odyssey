@@ -77,7 +77,6 @@ class Player extends SpriteAnimationGroupComponent
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.spike) {
         game.health -= 1;
-        print('trigger');
         other.removeFromParent();
       }
     }

@@ -4,9 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
-import 'package:incubation_odyssey/game/player/egg.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
-import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
@@ -16,20 +14,17 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   int _health = 3;
 
   double get heat => _heat;
-  void set heat(double currentheat) {
+  set heat(double currentheat) {
     _heat = currentheat;
-    debugText.text =
-        'Heat: ' + _heat.toString() + ' Health: ' + _health.toString();
-    player.egg.setState(Health: _health, heat: _heat);
+    debugText.text = 'Heat: $_heat Health: $_health';
+    player.egg.setState(health: _health, heat: _heat);
   }
 
   int get health => _health;
-  void set health(int currentHealth) {
-    print(currentHealth);
+  set health(int currentHealth) {
     _health = currentHealth;
-    debugText.text =
-        'Heat: ' + _heat.toString() + ' Health: ' + _health.toString();
-    player.egg.setState(Health: _health, heat: _heat);
+    debugText.text = 'Heat: $_heat Health: $_health';
+    player.egg.setState(health: _health, heat: _heat);
   }
 
   @override
@@ -40,8 +35,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     await super.onLoad();
 
     player = Player();
-    debugText = TextComponent(
-        text: 'Heat: ' + _heat.toString() + ' Health: ' + _health.toString());
+    debugText = TextComponent(text: 'Heat: $_heat Health: $_health');
 
     add(BackgroundHolder());
 
@@ -74,7 +68,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
       RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     final isZ = keysPressed.contains(LogicalKeyboardKey.keyZ);
     final isKeyDown = event is RawKeyDownEvent;
-    // TODO: implement onKeyEvent
     if (isZ && isKeyDown) {
       player.jump();
       return KeyEventResult.handled;
