@@ -19,7 +19,7 @@ class _GameAppState extends State<GameApp> {
       game: game,
       initialActiveOverlays: const [MainMenuScreen.id],
       overlayBuilderMap: {
-        '': (context, _) => MainMenuScreen(game: game),
+        'mainmenu': (context, _) => MainMenuScreen(game: game),
         'gameover': (context, _) => GameOverScreen(game: game)
       },
     );
