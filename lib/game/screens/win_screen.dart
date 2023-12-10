@@ -18,7 +18,7 @@ class WinScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('You Won!!',
+            const Text('Hatch Hatch!!',
                 style: TextStyle(
                     fontSize: 60,
                     color: Colors.white,

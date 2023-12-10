@@ -293,10 +293,10 @@ class Player extends SpriteGroupComponent
         current == EggState.dragonHatched ||
         current == EggState.wyvernHatched ||
         current == EggState.lizardHatched);
-    if (game.health > 0 && isHatched) {
+    if (isHatched) {
       game.winGame();
     }
-    if (game.health <= 0) {
+    if (game.health <= 0 && !isHatched) {
       game.gameOver();
     }
   }
