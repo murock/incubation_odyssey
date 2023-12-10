@@ -10,7 +10,7 @@ import 'package:incubation_odyssey/game/variables.dart';
 
 enum PlayerState {
   idle,
-  heating,
+  jump,
 }
 
 class Balloon extends SpriteGroupComponent with HasGameRef<MainGame> {
@@ -19,9 +19,11 @@ class Balloon extends SpriteGroupComponent with HasGameRef<MainGame> {
   @override
   FutureOr<void> onLoad() async {
     final Sprite idle = await game.loadSprite('player/balloon.png');
+    final Sprite jump = await game.loadSprite('player/balloon_fire.png');
 
     sprites = {
       PlayerState.idle: idle,
+      PlayerState.jump: jump,
     };
     scale = Vector2.all(0.15);
     current = PlayerState.idle;
@@ -34,5 +36,14 @@ class Balloon extends SpriteGroupComponent with HasGameRef<MainGame> {
     // add(egg);
 
     return super.onLoad();
+  }
+
+  void jump() {
+    print('jumping');
+    current = PlayerState.jump;
+  }
+
+  void fall() {
+    current = PlayerState.idle;
   }
 }
