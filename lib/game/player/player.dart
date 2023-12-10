@@ -176,7 +176,8 @@ class Player extends SpriteGroupComponent
       } else {
         current = EggState.chickenHatched;
       }
-    } else if (heat == 10) {
+    } else if (heat > Variables.minHeatThreshold &&
+        heat < Variables.maxHeatThreshold) {
       if (health == 3) {
         current = EggState.lizard;
       } else if (health == 2) {
@@ -186,7 +187,7 @@ class Player extends SpriteGroupComponent
       } else {
         current = EggState.lizardHatched;
       }
-    } else if (heat == 20) {
+    } else if (heat >= Variables.maxHeatThreshold) {
       if (health == 3) {
         current = EggState.dragon;
       } else if (health == 2) {
@@ -196,7 +197,8 @@ class Player extends SpriteGroupComponent
       } else {
         current = EggState.dragonHatched;
       }
-    } else if (heat == -10) {
+    } else if (heat < -Variables.minHeatThreshold &&
+        heat > -Variables.maxHeatThreshold) {
       if (health == 3) {
         current = EggState.penguin;
       } else if (health == 2) {
@@ -206,7 +208,7 @@ class Player extends SpriteGroupComponent
       } else {
         current = EggState.penguinHatched;
       }
-    } else if (heat == -20) {
+    } else if (heat <= -Variables.maxHeatThreshold) {
       if (health == 3) {
         current = EggState.wyvern;
       } else if (health == 2) {
@@ -295,8 +297,7 @@ class Player extends SpriteGroupComponent
         current == EggState.lizardHatched);
     if (isHatched) {
       game.winGame();
-    }
-    if (game.health <= 0 && !isHatched) {
+    } else if (game.health <= 0 && !isHatched) {
       game.gameOver();
     }
   }

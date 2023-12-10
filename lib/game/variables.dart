@@ -19,4 +19,7 @@ class Variables {
 
   static double yMax = 900;
   static double yMin = 200;
+
+  static double minHeatThreshold = 30;
+  static double maxHeatThreshold = 60;
 }

@@ -17,17 +17,17 @@ class GameApp extends StatefulWidget {
 
 class _GameAppState extends State<GameApp> {
   final ValueNotifier<bool> gameStartedNotifier = ValueNotifier<bool>(false);
-  late AudioPlayer _audioPlayer;
+//  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
-    FlameAudio.bgm.initialize();
+    //  FlameAudio.bgm.initialize();
     startMusic();
   }
 
   startMusic() async {
-    _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
+    // _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
   }
 
   @override
@@ -92,7 +92,7 @@ class _GameAppState extends State<GameApp> {
   @override
   void dispose() {
     gameStartedNotifier.dispose();
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     super.dispose();
   }
 }

@@ -16,8 +16,7 @@ import 'package:incubation_odyssey/game/variables.dart';
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late ValueNotifier<bool> gameStartedNotifier;
 
-  MainGame(
-      {required ValueNotifier<bool> gameStartValueNotifier}) {
+  MainGame({required ValueNotifier<bool> gameStartValueNotifier}) {
     gameStartedNotifier = gameStartValueNotifier;
   }
 
@@ -152,9 +151,12 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> winGame() async {
+    // final Sprite egg =
+
     pauseEngine();
     //TODO: _audioPlayer.stop();
     //TODO: _audioPlayer = await FlameAudio.loop('Mx_Win.wav');
+
     overlays.add(WinScreen.id);
   }
 

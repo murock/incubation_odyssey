@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:incubation_odyssey/game/variables.dart';
 
 class TemperatureBar extends StatelessWidget {
   final double temperature; // Temperature in Celsius or Fahrenheit
@@ -7,22 +8,34 @@ class TemperatureBar extends StatelessWidget {
 
   LinearGradient _getGradient() {
     // Define temperature ranges and corresponding gradient colors
-    if (temperature <= 10.0) {
+    if (temperature <= -Variables.minHeatThreshold &&
+        temperature > -Variables.maxHeatThreshold) {
       return const LinearGradient(
         colors: [Colors.blue, Colors.blueGrey],
         stops: [0.0, 1.0],
       );
-    } else if (temperature >= 10.0 && temperature <= 70.0) {
+    } else if (temperature <= -Variables.maxHeatThreshold) {
+      return const LinearGradient(
+        colors: [Colors.white, Colors.blueGrey],
+        stops: [0.0, 1.0],
+      );
+    } else if (temperature >= Variables.minHeatThreshold &&
+        temperature <= Variables.maxHeatThreshold) {
       return const LinearGradient(
         colors: [Colors.yellow, Colors.orange],
         stops: [0.0, 1.0],
       );
-    } else {
+    } else if (temperature > Variables.maxHeatThreshold) {
       return const LinearGradient(
         colors: [Colors.red, Colors.pink],
         stops: [0.0, 1.0],
       );
     }
+
+    return const LinearGradient(
+      colors: [Colors.yellow, Colors.white],
+      stops: [0.0, 1.0],
+    );
   }
 
   @override
@@ -37,7 +50,8 @@ class TemperatureBar extends StatelessWidget {
               height: 20.0,
               width: 200.0,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0), // Set rounded corners
+                borderRadius:
+                    BorderRadius.circular(10.0), // Set rounded corners
                 gradient: _getGradient(),
               ),
             ),
@@ -48,7 +62,8 @@ class TemperatureBar extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 5.0), // Spacer between bar and temperature number
+        const SizedBox(
+            height: 5.0), // Spacer between bar and temperature number
         Text(
           "${temperature.toString()}°c",
           style: const TextStyle(fontSize: 12.0),
