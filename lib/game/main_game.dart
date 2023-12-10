@@ -2,6 +2,7 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
@@ -11,6 +12,7 @@ import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
+  late AudioPlayer _audioPlayer;
   final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   int _health = 3;
 
@@ -34,6 +36,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   @override
   Future<void>? onLoad() async {
     await super.onLoad();
+    _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
 
     camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
 
@@ -77,5 +80,10 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
       return KeyEventResult.handled;
     }
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  Future<void> startGame() async {
+    _audioPlayer.stop();
+    _audioPlayer = await FlameAudio.play('Mx_Gameplay.wav');
   }
 }

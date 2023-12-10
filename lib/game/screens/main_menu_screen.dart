@@ -18,13 +18,15 @@ class MainMenuScreen extends StatelessWidget {
         onTap: () {
           game.overlays.remove(id);
           game.resumeEngine();
+          game.startGame();
         },
         child: Container(
           width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/bg_menu.png"), fit: BoxFit.cover)),
+                  image: AssetImage("assets/images/bg_menu.png"),
+                  fit: BoxFit.cover)),
           child: Center(
             child: ZoomingButton(),
           ),
@@ -78,10 +80,7 @@ class _ZoomingButtonState extends State<ZoomingButton>
         child: const Text(
           'Click to start',
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 60,
-            fontFamily: 'SinglyLinked'
-          ),
+              color: Colors.white, fontSize: 60, fontFamily: 'SinglyLinked'),
         ),
       ),
     );
