@@ -93,6 +93,10 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     //     anchor: Anchor.center,
     //   ),
     // );
+    PowerUp test = PowerUp(powerUpType: PowerUpType.spike);
+    test.x = 200;
+    test.y = 200;
+    add(test);
   }
 
   @override
