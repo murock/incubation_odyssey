@@ -56,8 +56,6 @@ class GameOverScreen extends StatelessWidget {
   }
 
   void onRestart() {
-    game.startGame();
-    game.overlays.remove('gameover');
-    game.resumeEngine();
+    game.resetGame();
   }
 }

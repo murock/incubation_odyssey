@@ -85,8 +85,6 @@ class WinScreen extends StatelessWidget {
   }
 
   void onRestart() {
-    game.startGame();
-    game.overlays.remove('win');
-    game.resumeEngine();
+    game.resetGame();
   }
 }

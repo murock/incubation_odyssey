@@ -288,15 +288,16 @@ class Player extends SpriteGroupComponent
   }
 
   void checkGameEnd() {
-    if (current == EggState.chickenHatched ||
+    bool isHatched = (current == EggState.chickenHatched ||
         current == EggState.penguinHatched ||
         current == EggState.dragonHatched ||
         current == EggState.wyvernHatched ||
-        current == EggState.lizardHatched) {
-          game.winGame();
-        }
-     if (game.health <= 0) { //TODO: conditions when game is over
-       //TODO game.gameOver();
-     }
+        current == EggState.lizardHatched);
+    if (game.health > 0 && isHatched) {
+      game.winGame();
+    }
+    if (game.health <= 0) {
+      game.gameOver();
+    }
   }
 }

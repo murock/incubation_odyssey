@@ -17,8 +17,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late ValueNotifier<bool> gameStartedNotifier;
 
   MainGame(
-      {required ValueNotifier<double> temperatureValueNotifier,
-      required ValueNotifier<bool> gameStartValueNotifier}) {
+      {required ValueNotifier<bool> gameStartValueNotifier}) {
     gameStartedNotifier = gameStartValueNotifier;
   }
 
@@ -127,6 +126,14 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     pauseEngine();
   }
 
+  Future<void> resetGame() async {
+    overlays.clear();
+    health = 3;
+    heat = 0;
+    player.current = EggState.chicken;
+    resumeEngine();
+  }
+
   Future<void> startGame() async {
     /// _audioPlayer.stop();
     // _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
@@ -134,7 +141,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> gameOver() async {
-    _audioPlayer.stop();
+    //TODO: _audioPlayer.stop();
     //TODO: _audioPlayer = await FlameAudio.loop('Mx_GameOver.wav');
     gameStartedNotifier.value = false;
     overlays.add(GameOverScreen.id);
@@ -142,11 +149,11 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> winGame() async {
-    _audioPlayer.stop();
+    pauseEngine();
+    //TODO: _audioPlayer.stop();
     //TODO: _audioPlayer = await FlameAudio.loop('Mx_Win.wav');
     gameStartedNotifier.value = false;
     overlays.add(WinScreen.id);
-    pauseEngine();
   }
 
   void setPlayerSpeed(double speed) {

@@ -47,7 +47,6 @@ class PauseScreen extends StatelessWidget {
   }
 
   void onRestart() {
-    game.startGame();
     game.overlays.remove('pause');
     game.resumeEngine();
   }

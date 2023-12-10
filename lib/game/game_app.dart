@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
 import 'package:incubation_odyssey/game/screens/gameover_screen.dart';
@@ -15,13 +16,23 @@ class GameApp extends StatefulWidget {
 }
 
 class _GameAppState extends State<GameApp> {
-  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   final ValueNotifier<bool> gameStartedNotifier = ValueNotifier<bool>(false);
+  late AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    FlameAudio.bgm.initialize();
+    startMusic();
+  }
+
+  startMusic() async {
+    _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
+  }
 
   @override
   Widget build(BuildContext context) {
     final game = MainGame(
-      temperatureValueNotifier: heatNotifier,
       gameStartValueNotifier: gameStartedNotifier,
     );
 
@@ -47,9 +58,29 @@ class _GameAppState extends State<GameApp> {
                 top: 30,
                 left: 10,
                 child: ValueListenableBuilder<double>(
-                  valueListenable: heatNotifier,
+                  valueListenable: game.heatNotifier,
                   builder: (context, temperature, child) {
                     return TemperatureBar(temperature: temperature);
+                  },
+                ),
+              );
+            }),
+        ValueListenableBuilder<bool>(
+            valueListenable: gameStartedNotifier,
+            builder: (context, gameStarted, child) {
+              if (!gameStarted) {
+                return const SizedBox.shrink();
+              }
+              return Positioned(
+                top: 30,
+                right: 10,
+                child: IconButton(
+                  icon: Icon(
+                    game.paused ? Icons.play_arrow : Icons.pause,
+                    size: 80,
+                  ),
+                  onPressed: () {
+                    game.pauseGame();
                   },
                 ),
               );
@@ -61,7 +92,7 @@ class _GameAppState extends State<GameApp> {
   @override
   void dispose() {
     gameStartedNotifier.dispose();
-    heatNotifier.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 }
