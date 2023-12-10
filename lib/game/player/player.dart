@@ -86,7 +86,7 @@ class Player extends SpriteAnimationGroupComponent
         game.heat -= 20;
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.snowflake) {
-        game.health -= 30;
+        game.heat -= 30;
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.spike) {
         game.health -= 1;
