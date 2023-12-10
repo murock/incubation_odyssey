@@ -30,8 +30,6 @@ class InstructionsScreen extends StatelessWidget {
                     _buildText('''
                     🅩 Use the 'Z' key to jump.
                     🅧 Use the 'X' key to dash.
-                   
-                    Happy adventuring! 🌟
                     '''),
                     _buildHeading('🎈 Embark on a Whimsical Journey!'),
                     _buildText(
@@ -54,6 +52,9 @@ class InstructionsScreen extends StatelessWidget {
                     _buildHeading('🔮 The Fate of Your Hatchling Awaits!'),
                     _buildText(
                         'The fate of your hatchling is in your hands, adventurer—may your journey be as epic as the gas giant that cradles you in its celestial embrace. Safe travels through the magical cosmos of Aetherion! 🚀🌌'),
+                    _buildText('''
+                    Happy adventuring! 🌟
+                    ''')
                   ],
                 ),
               ),
