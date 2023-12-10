@@ -13,15 +13,15 @@ class GameApp extends StatefulWidget {
 }
 
 class _GameAppState extends State<GameApp> {
-  ValueNotifier<double> temperatureNotifier = ValueNotifier<double>(0.0);
+  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
+  final ValueNotifier<bool> gameStartedNotifier = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
-    final game = MainGame();
-    temperatureNotifier = ValueNotifier<double>(game.heat);
-    game.heatNotifier.addListener(() {
-      temperatureNotifier.value = game.heat;
-    });
+    final game = MainGame(
+      temperatureValueNotifier: heatNotifier,
+      gameStartValueNotifier: gameStartedNotifier,
+    );
 
     return Stack(
       children: [
@@ -33,24 +33,31 @@ class _GameAppState extends State<GameApp> {
             'gameover': (context, _) => GameOverScreen(game: game),
           },
         ),
-        Positioned(
-          top: 30,
-          left: 10,
-          child: ValueListenableBuilder<double>(
-            valueListenable: temperatureNotifier,
-            builder: (context, temperature, child) {
-              return TemperatureBar(temperature: temperature);
-            },
-          ),
-        ),
+        ValueListenableBuilder<bool>(
+            valueListenable: gameStartedNotifier,
+            builder: (context, gameStarted, child) {
+              if (!gameStarted) {
+                return const SizedBox.shrink();
+              }
+              return Positioned(
+                top: 30,
+                left: 10,
+                child: ValueListenableBuilder<double>(
+                  valueListenable: heatNotifier,
+                  builder: (context, temperature, child) {
+                    return TemperatureBar(temperature: temperature);
+                  },
+                ),
+              );
+            }),
       ],
     );
   }
 
   @override
   void dispose() {
-    temperatureNotifier.dispose();
+    gameStartedNotifier.dispose();
+    heatNotifier.dispose();
     super.dispose();
   }
 }
-

@@ -1,4 +1,3 @@
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -6,18 +5,24 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
-import 'package:incubation_odyssey/game/player/balloon.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
+  late ValueNotifier<double> heatNotifier;
+  late ValueNotifier<bool> gameStartedNotifier;
+
+  MainGame({required ValueNotifier<double> temperatureValueNotifier, required ValueNotifier<bool> gameStartValueNotifier}) {
+    heatNotifier = temperatureValueNotifier;
+    gameStartedNotifier = gameStartValueNotifier;
+  }
+
   late Player player;
   late TextComponent debugText;
   late BackgroundHolder backgroundHolder;
   late AudioPlayer _audioPlayer;
-  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   int _health = 3;
 
   late Timer _dashTimer;
@@ -116,6 +121,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Future<void> startGame() async {
     _audioPlayer.stop();
     _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
+    gameStartedNotifier.value = true;
   }
 
   void setPlayerSpeed(double speed) {
