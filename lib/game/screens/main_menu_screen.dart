@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../main_game.dart';
+import '../theme/game_theme.dart';
+import 'instructions_screen.dart';
 
 class MainMenuScreen extends StatelessWidget {
   final MainGame game;
@@ -14,23 +15,48 @@ class MainMenuScreen extends StatelessWidget {
     game.pauseEngine();
 
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          game.overlays.remove(id);
-          game.resumeEngine();
-          game.startGame();
-        },
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/bg_menu.png"),
-                  fit: BoxFit.cover)),
-          child: Center(
-            child: ZoomingButton(),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/bg_menu.png"),
+                fit: BoxFit.cover)),
+        child: Stack(children: [
+          Positioned(
+            bottom: 30,
+            right: 10,
+            child: IconButton(
+              icon: const Row(
+                  children: [
+                Text("instructions",
+                    style: TextStyle(
+                      fontSize: 34,
+                      fontFamily: 'SinglyLinked',
+                      color: GameTheme.brown,
+                    )),
+                Icon(
+                  Icons.integration_instructions_outlined,
+                  size: 60,
+                  color: GameTheme.brown,
+                ),
+              ]),
+              onPressed: () {
+                game.overlays.add(InstructionsScreen.id);
+              },
+            ),
           ),
-        ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                game.overlays.remove(id);
+                game.resumeEngine();
+                game.startGame();
+              },
+              child: ZoomingButton(),
+            ),
+          ),
+        ]),
       ),
     );
   }
