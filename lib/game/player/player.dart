@@ -125,6 +125,8 @@ class Player extends SpriteGroupComponent
       balloon.fall();
     }
 
+    checkGameEnd();
+
     super.update(dt);
   }
 
@@ -265,5 +267,18 @@ class Player extends SpriteGroupComponent
     ));
     text.add(RemoveEffect(delay: 0.5));
     game.add(text);
+  }
+
+  void checkGameEnd() {
+    if (current == EggState.chickenHatched ||
+        current == EggState.penguinHatched ||
+        current == EggState.dragonHatched ||
+        current == EggState.wyvernHatched ||
+        current == EggState.lizardHatched) {
+          game.winGame();
+        }
+     if (game.health <= 0) { //TODO: conditions when game is over
+       //TODO game.gameOver();
+     }
   }
 }

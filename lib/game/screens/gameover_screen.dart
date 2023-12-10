@@ -17,15 +17,20 @@ class GameOverScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text('Game Over!',
+                style: TextStyle(
+                    fontSize: 60,
+                    color: Colors.white,
+                    fontFamily: 'SamuraiBlast')),
+            const SizedBox(height: 20),
             Text(
-                'Heat: ${game.heat}',
+                'Hearts Remaining: ${game.health}',
                 style: const TextStyle(
                     fontSize: 60,
                     color: Colors.white,
-                    fontFamily: 'Game'
+                    fontFamily: 'SinglyLinked'
                 )
             ),
-            Image.asset("gameover.png"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: onRestart,
@@ -39,6 +44,7 @@ class GameOverScreen extends StatelessWidget {
                 'Restart',
                 style: TextStyle(
                   fontSize: 20,
+                  fontFamily: 'SinglyLinked',
                   color: Colors.white, // Set text color to white
                 ),
               ),
@@ -50,7 +56,7 @@ class GameOverScreen extends StatelessWidget {
   }
 
   void onRestart() {
-    //TODO: reset game
+    game.startGame();
     game.overlays.remove('gameover');
     game.resumeEngine();
   }

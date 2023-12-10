@@ -8,6 +8,9 @@ import 'package:incubation_odyssey/game/background/background.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
+import 'package:incubation_odyssey/game/screens/gameover_screen.dart';
+import 'package:incubation_odyssey/game/screens/pause_screen.dart';
+import 'package:incubation_odyssey/game/screens/win_screen.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
@@ -118,10 +121,31 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     _dashCooldownTimer.update(dt);
   }
 
+  Future<void> pauseGame() async {
+    overlays.add(PauseScreen.id);
+    pauseEngine();
+  }
+
   Future<void> startGame() async {
     _audioPlayer.stop();
     _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
     gameStartedNotifier.value = true;
+  }
+
+  Future<void> gameOver() async {
+    _audioPlayer.stop();
+    //TODO: _audioPlayer = await FlameAudio.loop('Mx_GameOver.wav');
+    gameStartedNotifier.value = false;
+    overlays.add(GameOverScreen.id);
+    pauseEngine();
+  }
+
+  Future<void> winGame() async {
+    _audioPlayer.stop();
+    //TODO: _audioPlayer = await FlameAudio.loop('Mx_Win.wav');
+    gameStartedNotifier.value = false;
+    overlays.add(WinScreen.id);
+    pauseEngine();
   }
 
   void setPlayerSpeed(double speed) {

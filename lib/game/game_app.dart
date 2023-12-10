@@ -1,8 +1,10 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
-import 'package:incubation_odyssey/game/screens/game_screen.dart';
+import 'package:incubation_odyssey/game/screens/gameover_screen.dart';
 import 'package:incubation_odyssey/game/screens/main_menu_screen.dart';
+import 'package:incubation_odyssey/game/screens/pause_screen.dart';
+import 'package:incubation_odyssey/game/screens/win_screen.dart';
 import 'package:incubation_odyssey/game/widgets/temperature_bar.dart';
 
 class GameApp extends StatefulWidget {
@@ -30,7 +32,9 @@ class _GameAppState extends State<GameApp> {
           initialActiveOverlays: const [MainMenuScreen.id],
           overlayBuilderMap: {
             'mainmenu': (context, _) => MainMenuScreen(game: game),
+            'pause': (context, _) => PauseScreen(game: game),
             'gameover': (context, _) => GameOverScreen(game: game),
+            'win': (context, _) => WinScreen(game: game),
           },
         ),
         ValueListenableBuilder<bool>(
