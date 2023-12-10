@@ -129,6 +129,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     player.x = 200;
 
     resumeEngine();
+    _audioPlayer.stop();
+    _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
     eggComponent?.removeFromParent();
     _powerUpSpawner.cleanUp();
   }
@@ -185,7 +187,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
     pauseEngine();
     _audioPlayer.stop();
-    _audioPlayer = await FlameAudio.loop('win.wav');
+    _audioPlayer = await FlameAudio.play('win.wav');
 
     overlays.add(WinScreen.id);
   }
