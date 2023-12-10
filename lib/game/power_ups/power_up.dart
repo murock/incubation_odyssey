@@ -22,21 +22,21 @@ class PowerUpData {
     required this.srcLoc,
     required this.size,
     required this.movementCallback,
+    this.numFrames = 1,
     this.srcPos,
   });
   final String srcLoc;
   final Vector2 size;
+  final int numFrames;
   final Vector2? srcPos;
   final double Function({required double elapsedTime}) movementCallback;
 }
 
 class PowerUp extends SpriteAnimationComponent with HasGameRef<MainGame> {
   PowerUp({
-    required this.numFrames,
     required this.powerUpType,
   });
 
-  final int numFrames;
   final PowerUpType powerUpType;
 
   double? straightMovementHeight;
@@ -82,8 +82,9 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef<MainGame> {
     ),
     PowerUpType.spike: PowerUpData(
       srcLoc: 'power_ups/spike.png',
-      size: Vector2(151, 151),
+      size: Vector2(200, 200),
       movementCallback: _straightMovement,
+      numFrames: 2,
     ),
   };
 
@@ -110,7 +111,8 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef<MainGame> {
     animation = await SpriteAnimation.load(
       imageSourceMap[powerUpType]!.srcLoc,
       SpriteAnimationData.sequenced(
-        amount: numFrames,
+        amount: imageSourceMap[powerUpType]!.numFrames,
+        amountPerRow: 1,
         stepTime: 0.1,
         textureSize: imageSourceMap[powerUpType]!.size,
         texturePosition: imageSourceMap[powerUpType]?.srcPos != null

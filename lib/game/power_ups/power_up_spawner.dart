@@ -42,7 +42,6 @@ class PowerUpSpawner extends Component with HasGameRef {
     late final PowerUpType powerUpType = PowerUpType.values[intValue];
 
     PowerUp powerUp = PowerUp(
-      numFrames: 1,
       powerUpType: powerUpType,
     );
     add(powerUp);
