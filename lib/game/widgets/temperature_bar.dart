@@ -5,28 +5,55 @@ class TemperatureBar extends StatelessWidget {
 
   TemperatureBar({required this.temperature});
 
-  Color _getColor() {
-    // Define temperature ranges and corresponding colors
+  LinearGradient _getGradient() {
+    // Define temperature ranges and corresponding gradient colors
     if (temperature <= 10.0) {
-      return Colors.blue; // Cold (blue)
-    } else if (temperature <= 25.0) {
-      return Colors.yellow; // Average (yellow)
+      return const LinearGradient(
+        colors: [Colors.blue, Colors.blueGrey],
+        stops: [0.0, 1.0],
+      );
+    } else if (temperature >= 10.0 && temperature <= 70.0) {
+      return const LinearGradient(
+        colors: [Colors.yellow, Colors.orange],
+        stops: [0.0, 1.0],
+      );
     } else {
-      return Colors.red; // Hot (red)
+      return const LinearGradient(
+        colors: [Colors.red, Colors.pink],
+        stops: [0.0, 1.0],
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 20.0,
-      width: 200.0,
-      child: LinearProgressIndicator(
-        value: (temperature - (-20)) / (40 - (-20)),
-        valueColor: AlwaysStoppedAnimation<Color>(_getColor()),
-        backgroundColor: Colors.white,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: 20.0,
+              width: 200.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0), // Set rounded corners
+                gradient: _getGradient(),
+              ),
+            ),
+            Container(
+              height: 20.0,
+              width: 2.0,
+              color: Colors.black, // Vertical line at 0 degrees mark
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0), // Spacer between bar and temperature number
+        Text(
+          "${temperature.toString()}°c",
+          style: const TextStyle(fontSize: 12.0),
+        ),
+      ],
     );
   }
 }
-

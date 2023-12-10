@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flame/effects.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
 import 'package:incubation_odyssey/game/player/balloon.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
+import 'package:incubation_odyssey/game/theme/game_theme.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 enum EggState {
@@ -215,24 +217,31 @@ class Player extends SpriteGroupComponent
       final double intialHeat = game.heat;
       if (powerUp.powerUpType == PowerUpType.fire) {
         game.heat += 30;
+        showTemperatureText("+30");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.coal) {
         game.heat += 20;
+        showTemperatureText("+20");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.heatwave) {
         game.heat += 10;
+        showTemperatureText("+10");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.water) {
         game.heat -= 10;
+        showTemperatureText("-10");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.iceCube) {
         game.heat -= 20;
+        showTemperatureText("-20");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.snowflake) {
         game.heat -= 30;
+        showTemperatureText("-30");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.spike) {
         game.health -= 1;
+        showTemperatureText("-1");
         other.removeFromParent();
         FlameAudio.play('ShellCrack.wav');
       }
@@ -243,5 +252,22 @@ class Player extends SpriteGroupComponent
         FlameAudio.play('Warmer.wav');
       }
     }
+  }
+
+  void showTemperatureText(String temperature) {
+    final text = TextComponent(
+      priority: 3,
+      position: Vector2(position.x + size.x / 2, position.y + 40),
+      anchor: Anchor.center,
+      text: temperature,
+      textRenderer: GameTheme.regular,
+    );
+
+    text.add(MoveEffect.by(
+      Vector2(0, -50),
+      EffectController(duration: 0.5),
+    ));
+    text.add(RemoveEffect(delay: 0.5));
+    game.add(text);
   }
 }
