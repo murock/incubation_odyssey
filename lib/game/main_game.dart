@@ -143,7 +143,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Future<void> gameOver() async {
     //TODO: _audioPlayer.stop();
     //TODO: _audioPlayer = await FlameAudio.loop('Mx_GameOver.wav');
-    gameStartedNotifier.value = false;
     overlays.add(GameOverScreen.id);
     pauseEngine();
   }
@@ -152,7 +151,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     pauseEngine();
     //TODO: _audioPlayer.stop();
     //TODO: _audioPlayer = await FlameAudio.loop('Mx_Win.wav');
-    gameStartedNotifier.value = false;
     overlays.add(WinScreen.id);
   }
 
