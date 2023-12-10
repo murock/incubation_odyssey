@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:incubation_odyssey/game/main_game.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 enum PowerUpType {
@@ -19,14 +21,16 @@ class PowerUpData {
   PowerUpData({
     required this.srcLoc,
     required this.size,
+    required this.movementCallback,
     this.srcPos,
   });
   final String srcLoc;
   final Vector2 size;
   final Vector2? srcPos;
+  final double Function({required double elapsedTime}) movementCallback;
 }
 
-class PowerUp extends SpriteAnimationComponent with HasGameRef {
+class PowerUp extends SpriteAnimationComponent with HasGameRef<MainGame> {
   PowerUp({
     required this.numFrames,
     required this.powerUpType,
@@ -35,6 +39,8 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
   final int numFrames;
   final PowerUpType powerUpType;
 
+  double? straightMovementHeight;
+
   double elapsedTime = 0;
 
   final Map<PowerUpType, PowerUpData> imageSourceMap = {
@@ -42,34 +48,43 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
       size: Vector2(100, 100),
       srcPos: Vector2(0, 0),
+      movementCallback: _straightMovement,
     ),
     PowerUpType.coal: PowerUpData(
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
       size: Vector2(100, 100),
       srcPos: Vector2(0, 100),
+      movementCallback: _fallingMovement,
     ),
     PowerUpType.heatwave: PowerUpData(
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
       size: Vector2(100, 100),
       srcPos: Vector2(0, 200),
+      movementCallback: _waveMovement,
     ),
     PowerUpType.snowflake: PowerUpData(
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
       size: Vector2(100, 100),
       srcPos: Vector2(100, 0),
+      movementCallback: _waveMovement,
     ),
     PowerUpType.water: PowerUpData(
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
       size: Vector2(100, 100),
       srcPos: Vector2(100, 100),
+      movementCallback: _fallingMovement,
     ),
     PowerUpType.iceCube: PowerUpData(
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
       size: Vector2(100, 100),
       srcPos: Vector2(100, 200),
+      movementCallback: _fallingMovement,
     ),
-    PowerUpType.spike:
-        PowerUpData(srcLoc: 'power_ups/spike.png', size: Vector2(151, 151)),
+    PowerUpType.spike: PowerUpData(
+      srcLoc: 'power_ups/spike.png',
+      size: Vector2(151, 151),
+      movementCallback: _straightMovement,
+    ),
   };
 
   static double speed = Variables.powerUpSpeed + Variables.playerBaseSpeed;
@@ -111,8 +126,32 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
     elapsedTime += dt * Variables.powerUpSpeed;
 
     x -= speed * dt;
-    y = Variables.powerUpPathAmplitude * sin(0.01 * elapsedTime) +
-        Variables.powerUpHeight;
+    y = (powerUpType == PowerUpType.fire || powerUpType == PowerUpType.spike)
+        ? powerUpHeight
+        : imageSourceMap[powerUpType]!
+            .movementCallback(elapsedTime: elapsedTime);
+    // Variables.powerUpPathAmplitude * sin(0.01 * elapsedTime) +
+    //     Variables.powerUpHeight;
     if (x < 0 - size.x) removeFromParent();
+  }
+
+  double get powerUpHeight {
+    straightMovementHeight ??= _straightMovement(elapsedTime: 0);
+    return straightMovementHeight!;
+  }
+
+  static double _waveMovement({required double elapsedTime}) {
+    return Variables.powerUpPathAmplitude * sin(0.01 * elapsedTime) +
+        Variables.powerUpHeight;
+  }
+
+  static double _straightMovement({required double elapsedTime}) {
+    var intValue = Random().nextDouble() * (Variables.yMax - Variables.yMin) +
+        Variables.yMin;
+    return intValue;
+  }
+
+  static double _fallingMovement({required double elapsedTime}) {
+    return elapsedTime;
   }
 }

@@ -41,8 +41,8 @@ class Player extends SpriteGroupComponent
   late Balloon balloon;
 
   double _speedY = 0.0;
-  final double _yMax = 900;
-  final double _yMin = 200;
+  final double yMax = Variables.yMax;
+  final double yMin = Variables.yMin;
   bool _isJumping = false;
 
   @override
@@ -150,11 +150,11 @@ class Player extends SpriteGroupComponent
   }
 
   bool _isOnGround() {
-    return y >= _yMax;
+    return y >= yMax;
   }
 
   bool _isOnRoof() {
-    return y <= _yMin;
+    return y <= yMin;
   }
 
   Future<Sprite> _getSprite({required Vector2 srcPosition}) async {

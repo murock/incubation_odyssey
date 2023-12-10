@@ -20,11 +20,7 @@ class PowerUpSpawner extends Component with HasGameRef {
 
   @override
   FutureOr<void> onLoad() {
-    _timer = Timer(
-      Variables.initialpowerUpSpawnRate,
-      repeat: true,
-      onTick: _spawn,
-    );
+    _timer = _setupTimer();
     return super.onLoad();
   }
 
@@ -50,5 +46,17 @@ class PowerUpSpawner extends Component with HasGameRef {
       powerUpType: powerUpType,
     );
     add(powerUp);
+
+    _timer = _setupTimer();
+    _timer.start();
+  }
+
+  Timer _setupTimer() {
+    final double timerValue =
+        Random().nextDouble() * Variables.maxPowerUpSpawnTime;
+    return Timer(
+      timerValue,
+      onTick: _spawn,
+    );
   }
 }
