@@ -14,17 +14,19 @@ import 'package:incubation_odyssey/game/screens/win_screen.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  late ValueNotifier<double> heatNotifier;
   late ValueNotifier<bool> gameStartedNotifier;
 
-  MainGame({required ValueNotifier<double> temperatureValueNotifier, required ValueNotifier<bool> gameStartValueNotifier}) {
-    heatNotifier = temperatureValueNotifier;
+  MainGame(
+      {required ValueNotifier<double> temperatureValueNotifier,
+      required ValueNotifier<bool> gameStartValueNotifier}) {
     gameStartedNotifier = gameStartValueNotifier;
   }
 
   late Player player;
   late TextComponent debugText;
   late BackgroundHolder backgroundHolder;
+  // late AudioPlayer _audioPlayer;
+  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   late AudioPlayer _audioPlayer;
   int _health = 3;
 
@@ -52,7 +54,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   @override
   Future<void>? onLoad() async {
     await super.onLoad();
-    _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
+    //   _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
 
     // camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
     camera = CameraComponent.withFixedResolution(width: 1920, height: 1080);
@@ -63,7 +65,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
       setPlayerSpeed(Variables.playerBaseSpeed);
     });
     _dashCooldownTimer = Timer(Variables.dashCooldown, onTick: () {
-      print('finished dash');
       _dashReady = true;
     });
 
@@ -127,8 +128,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> startGame() async {
-    _audioPlayer.stop();
-    _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
+    /// _audioPlayer.stop();
+    // _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
     gameStartedNotifier.value = true;
   }
 
@@ -149,14 +150,16 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void setPlayerSpeed(double speed) {
-    children.whereType<PowerUp>().forEach((powerUp) {
-      powerUp.speed = Variables.powerUpSpeed + speed;
-    });
+    // children.whereType<PowerUp>().forEach((powerUp) {
+    //   powerUp.speed = Variables.powerUpSpeed + speed;
+    // });
+
+    PowerUp.speed = Variables.powerUpSpeed + speed;
 
     Variables.playerSpeed = speed;
 
     backgroundHolder.background.parallax?.baseVelocity =
-        Vector2(Variables.playerSpeed, 1);
+        Vector2(Variables.playerSpeed, 0);
   }
 
   void dash() {

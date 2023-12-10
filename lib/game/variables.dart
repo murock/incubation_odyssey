@@ -2,7 +2,7 @@ class Variables {
   static double gameScale = 3;
   static double gravity = 400;
   static double jumpForce = 600;
-  static double dashCooldown = 4;
+  static double dashCooldown = 2;
   static double dashDuration = 0.2;
   static double dashSpeed = 1500;
 

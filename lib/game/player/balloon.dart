@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
@@ -40,6 +41,7 @@ class Balloon extends SpriteGroupComponent with HasGameRef<MainGame> {
 
   void jump() {
     print('jumping');
+    FlameAudio.play('Jump.wav');
     current = PlayerState.jump;
   }
 
