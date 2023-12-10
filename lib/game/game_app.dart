@@ -19,18 +19,6 @@ class GameApp extends StatefulWidget {
 
 class _GameAppState extends State<GameApp> {
   final ValueNotifier<bool> gameStartedNotifier = ValueNotifier<bool>(false);
-//  late AudioPlayer _audioPlayer;
-
-  @override
-  void initState() {
-    super.initState();
-    //  FlameAudio.bgm.initialize();
-    startMusic();
-  }
-
-  startMusic() async {
-    // _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
-  }
 
   @override
   Widget build(BuildContext context) {
