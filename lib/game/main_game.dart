@@ -8,14 +8,21 @@ import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
 import 'package:incubation_odyssey/game/player/balloon.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
+import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
+import 'package:incubation_odyssey/game/variables.dart';
 
 class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
+  late BackgroundHolder backgroundHolder;
   late AudioPlayer _audioPlayer;
   final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   int _health = 3;
+
+  late Timer _dashTimer;
+  late Timer _dashCooldownTimer;
+  bool _dashReady = true;
 
   double get heat => heatNotifier.value;
   set heat(double currentheat) {
@@ -43,10 +50,20 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     camera = CameraComponent.withFixedResolution(width: 1920, height: 1080);
 
     player = Player();
+    _dashTimer = Timer(Variables.dashDuration, onTick: () {
+      player.stopDash();
+      setPlayerSpeed(Variables.playerBaseSpeed);
+    });
+    _dashCooldownTimer = Timer(Variables.dashCooldown, onTick: () {
+      print('finished dash');
+      _dashReady = true;
+    });
+
     debugText =
         TextComponent(text: 'Heat: ${heatNotifier.value} Health: $_health');
 
-    add(BackgroundHolder());
+    backgroundHolder = BackgroundHolder();
+    add(backgroundHolder);
 
     add(player);
     add(
@@ -76,16 +93,50 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   KeyEventResult onKeyEvent(
       RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     final isZ = keysPressed.contains(LogicalKeyboardKey.keyZ);
+    final isX = keysPressed.contains(LogicalKeyboardKey.keyX);
     final isKeyDown = event is RawKeyDownEvent;
-    if (isZ && isKeyDown) {
+
+    if (isX && isKeyDown) {
+      dash();
+      return KeyEventResult.handled;
+    } else if (isZ && isKeyDown) {
       player.jump();
       return KeyEventResult.handled;
     }
     return super.onKeyEvent(event, keysPressed);
   }
 
+  @override
+  void update(double dt) {
+    super.update(dt);
+    _dashTimer.update(dt);
+    _dashCooldownTimer.update(dt);
+  }
+
   Future<void> startGame() async {
     _audioPlayer.stop();
     _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
+  }
+
+  void setPlayerSpeed(double speed) {
+    children.whereType<PowerUp>().forEach((powerUp) {
+      powerUp.speed = Variables.powerUpSpeed + speed;
+    });
+
+    Variables.playerSpeed = speed;
+
+    backgroundHolder.background.parallax?.baseVelocity =
+        Vector2(Variables.playerSpeed, 1);
+  }
+
+  void dash() {
+    if (_dashReady) {
+      player.dash();
+      setPlayerSpeed(Variables.playerBaseSpeed + Variables.dashSpeed);
+      _dashTimer.start();
+      _dashReady = false;
+      print('cooldownStarted');
+      _dashCooldownTimer.start();
+    }
   }
 }

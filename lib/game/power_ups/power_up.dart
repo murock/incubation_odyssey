@@ -71,6 +71,9 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
   };
 
   static double _speed = Variables.powerUpSpeed + Variables.playerBaseSpeed;
+  set speed(double speed) {
+    _speed = speed;
+  }
 
   @override
   FutureOr<void> onLoad() {

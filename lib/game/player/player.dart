@@ -125,6 +125,16 @@ class Player extends SpriteGroupComponent
     super.update(dt);
   }
 
+  void dash() {
+    _isDashing = true;
+    angle = 0.4;
+  }
+
+  void stopDash() {
+    _isDashing = false;
+    angle = 0;
+  }
+
   void jump() {
     if (_isOnGround()) {
       _speedY = -Variables.jumpForce;
@@ -200,7 +210,6 @@ class Player extends SpriteGroupComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    print('other');
 
     if (other is PowerUp) {
       final PowerUp powerUp = other;
