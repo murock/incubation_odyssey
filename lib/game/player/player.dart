@@ -3,46 +3,107 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
-import 'package:incubation_odyssey/game/player/egg.dart';
+import 'package:incubation_odyssey/game/player/balloon.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
-enum PlayerState {
-  idle,
-  heating,
+enum EggState {
+  wyvern,
+  wyvernDamaged1,
+  wyvernDamaged2,
+  wyvernHatched,
+  penguin,
+  penguinDamaged1,
+  penguinDamaged2,
+  penguinHatched,
+  chicken,
+  chickenDamaged1,
+  chickenDamaged2,
+  chickenHatched,
+  lizard,
+  lizardDamaged1,
+  lizardDamaged2,
+  lizardHatched,
+  dragon,
+  dragonDamaged1,
+  dragonDamaged2,
+  dragonHatched,
 }
 
-class Player extends SpriteAnimationGroupComponent
+class Player extends SpriteGroupComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
+  final double _textureWidth = 43;
+  final double _textureHeight = 60;
+  final double _margin = 2;
+  late Balloon balloon;
+
   double _speedY = 0.0;
   final double _yMax = 700;
   bool _isJumping = false;
   bool _isDashing = false;
-  late Egg egg;
 
   @override
   FutureOr<void> onLoad() async {
+    scale = Vector2.all(1.5);
+    // y = 100;
+    x = 200;
+
+    balloon = Balloon();
+    add(balloon);
+    balloon.x = -55;
+    balloon.y = -100;
+
     RectangleHitbox hitbox = RectangleHitbox();
     add(hitbox);
 
-    final SpriteAnimation idle = await game.loadSpriteAnimation(
-      'egg_sprite_sheet.png',
-      SpriteAnimationData.sequenced(
-        amount: 4,
-        stepTime: 0.1,
-        textureSize: Vector2(27, 24),
-      ),
-    );
+    final double damaged1Pos = _textureHeight;
+    final double damaged2Pos = _textureHeight * 2;
+    final double hatchedPos = _textureHeight * 3;
 
-    animations = {
-      PlayerState.idle: idle,
+    final double penguinXPos = _textureWidth + _margin;
+    final double wyvernXPos = _textureWidth * 2 + _margin;
+    final double lizardXPos = _textureWidth * 3 + _margin;
+    final double dragonXPos = _textureWidth * 4 + _margin;
+    sprites = {
+      EggState.chicken: await _getSprite(srcPosition: Vector2(_margin, 0)),
+      EggState.chickenDamaged1:
+          await _getSprite(srcPosition: Vector2(_margin, damaged1Pos)),
+      EggState.chickenDamaged2:
+          await _getSprite(srcPosition: Vector2(_margin, damaged2Pos)),
+      EggState.chickenHatched:
+          await _getSprite(srcPosition: Vector2(_margin, hatchedPos)),
+      EggState.penguin: await _getSprite(srcPosition: Vector2(penguinXPos, 0)),
+      EggState.penguinDamaged1:
+          await _getSprite(srcPosition: Vector2(penguinXPos, damaged1Pos)),
+      EggState.penguinDamaged2:
+          await _getSprite(srcPosition: Vector2(penguinXPos, damaged2Pos)),
+      EggState.penguinHatched:
+          await _getSprite(srcPosition: Vector2(penguinXPos, hatchedPos)),
+      EggState.wyvern: await _getSprite(srcPosition: Vector2(wyvernXPos, 0)),
+      EggState.wyvernDamaged1:
+          await _getSprite(srcPosition: Vector2(wyvernXPos, damaged1Pos)),
+      EggState.wyvernDamaged2:
+          await _getSprite(srcPosition: Vector2(wyvernXPos, damaged2Pos)),
+      EggState.wyvernHatched:
+          await _getSprite(srcPosition: Vector2(wyvernXPos, hatchedPos)),
+      EggState.lizard: await _getSprite(srcPosition: Vector2(lizardXPos, 0)),
+      EggState.lizardDamaged1:
+          await _getSprite(srcPosition: Vector2(lizardXPos, damaged1Pos)),
+      EggState.lizardDamaged2:
+          await _getSprite(srcPosition: Vector2(lizardXPos, damaged2Pos)),
+      EggState.lizardHatched:
+          await _getSprite(srcPosition: Vector2(lizardXPos, hatchedPos)),
+      EggState.dragon: await _getSprite(srcPosition: Vector2(dragonXPos, 0)),
+      EggState.dragonDamaged1:
+          await _getSprite(srcPosition: Vector2(dragonXPos, damaged1Pos)),
+      EggState.dragonDamaged2:
+          await _getSprite(srcPosition: Vector2(dragonXPos, damaged2Pos)),
+      EggState.dragonHatched:
+          await _getSprite(srcPosition: Vector2(dragonXPos, hatchedPos)),
     };
-    scale = Vector2.all(Variables.gameScale);
-    current = PlayerState.idle;
-
-    egg = Egg();
-    egg.parent = this;
-    add(egg);
+    current = EggState.chicken;
+    // x = 800;
+    // y = 900;
     return super.onLoad();
   }
 
@@ -64,9 +125,82 @@ class Player extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
+  void jump() {
+    if (_isOnGround()) {
+      _speedY = -Variables.jumpForce;
+    }
+  }
+
+  bool _isOnGround() {
+    return y >= _yMax;
+  }
+
+  Future<Sprite> _getSprite({required Vector2 srcPosition}) async {
+    return await game.loadSprite(
+      srcPosition: srcPosition,
+      srcSize: Vector2(_textureWidth, _textureHeight),
+      'player/egg_sprite_sheet.png',
+    );
+  }
+
+  void setState({required int health, required double heat}) {
+    if (heat == 0) {
+      if (health == 3) {
+        current = EggState.chicken;
+      } else if (health == 2) {
+        current = EggState.chickenDamaged1;
+      } else if (health == 1) {
+        current = EggState.chickenDamaged2;
+      } else {
+        current = EggState.chickenHatched;
+      }
+    } else if (heat == 10) {
+      if (health == 3) {
+        current = EggState.lizard;
+      } else if (health == 2) {
+        current = EggState.lizardDamaged1;
+      } else if (health == 1) {
+        current = EggState.lizardDamaged2;
+      } else {
+        current = EggState.lizardHatched;
+      }
+    } else if (heat == 20) {
+      if (health == 3) {
+        current = EggState.dragon;
+      } else if (health == 2) {
+        current = EggState.dragonDamaged1;
+      } else if (health == 1) {
+        current = EggState.dragonDamaged2;
+      } else {
+        current = EggState.dragonHatched;
+      }
+    } else if (heat == -10) {
+      if (health == 3) {
+        current = EggState.penguin;
+      } else if (health == 2) {
+        current = EggState.penguinDamaged1;
+      } else if (health == 1) {
+        current = EggState.penguinDamaged2;
+      } else {
+        current = EggState.penguinHatched;
+      }
+    } else if (heat == -20) {
+      if (health == 3) {
+        current = EggState.wyvern;
+      } else if (health == 2) {
+        current = EggState.wyvernDamaged1;
+      } else if (health == 1) {
+        current = EggState.wyvernDamaged2;
+      } else {
+        current = EggState.wyvernHatched;
+      }
+    }
+  }
+
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
+    print('other');
 
     if (other is PowerUp) {
       final PowerUp powerUp = other;
@@ -93,15 +227,5 @@ class Player extends SpriteAnimationGroupComponent
         other.removeFromParent();
       }
     }
-  }
-
-  void jump() {
-    if (_isOnGround()) {
-      _speedY = -Variables.jumpForce;
-    }
-  }
-
-  bool _isOnGround() {
-    return y >= _yMax;
   }
 }

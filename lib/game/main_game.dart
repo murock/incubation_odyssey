@@ -6,6 +6,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:incubation_odyssey/game/background/background.dart';
+import 'package:incubation_odyssey/game/player/balloon.dart';
 import 'package:incubation_odyssey/game/player/player.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up_spawner.dart';
 
@@ -20,14 +21,14 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   set heat(double currentheat) {
     heatNotifier.value = currentheat;
     debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
-    player.egg.setState(health: _health, heat: heatNotifier.value);
+    player.setState(health: _health, heat: heatNotifier.value);
   }
 
   int get health => _health;
   set health(int currentHealth) {
     _health = currentHealth;
     debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
-    player.egg.setState(health: _health, heat: heatNotifier.value);
+    player.setState(health: _health, heat: heatNotifier.value);
   }
 
   @override
@@ -38,7 +39,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     await super.onLoad();
     _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
 
-    camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
+    // camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
+    camera = CameraComponent.withFixedResolution(width: 1920, height: 1080);
 
     player = Player();
     debugText =
