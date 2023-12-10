@@ -42,12 +42,13 @@ class Player extends SpriteGroupComponent
 
   double _speedY = 0.0;
   final double _yMax = 900;
+  final double _yMin = 200;
   bool _isJumping = false;
 
   @override
   FutureOr<void> onLoad() async {
     scale = Vector2.all(1.5);
-    // y = 100;
+    y = 250;
     x = 200;
 
     balloon = Balloon();
@@ -115,11 +116,11 @@ class Player extends SpriteGroupComponent
     y += _speedY * dt;
 
     if (_isOnGround()) {
-      if (_isJumping) {
-        _isJumping = false;
-      }
-      y = _yMax;
-      _speedY = 0.0;
+      jump();
+      _takeDamaged();
+    } else if (_isOnRoof()) {
+      fall();
+      _takeDamaged();
     } else if (!_isJumping) {
       _isJumping = true;
     } else if (_speedY > 0) {
@@ -144,8 +145,16 @@ class Player extends SpriteGroupComponent
     balloon.jump();
   }
 
+  void fall() {
+    _speedY = Variables.jumpForce;
+  }
+
   bool _isOnGround() {
     return y >= _yMax;
+  }
+
+  bool _isOnRoof() {
+    return y <= _yMin;
   }
 
   Future<Sprite> _getSprite({required Vector2 srcPosition}) async {
@@ -242,10 +251,8 @@ class Player extends SpriteGroupComponent
         showTemperatureText("-30");
         other.removeFromParent();
       } else if (powerUp.powerUpType == PowerUpType.spike) {
-        game.health -= 1;
-        showTemperatureText("-1");
+        _takeDamaged();
         other.removeFromParent();
-        FlameAudio.play('ShellCrack.wav');
       }
 
       if (intialHeat > game.heat) {
@@ -254,6 +261,13 @@ class Player extends SpriteGroupComponent
         FlameAudio.play('Warmer.wav');
       }
     }
+  }
+
+  void _takeDamaged() {
+    game.health -= 1;
+    showTemperatureText("-1");
+
+    FlameAudio.play('ShellCrack.wav');
   }
 
   void showTemperatureText(String temperature) {
