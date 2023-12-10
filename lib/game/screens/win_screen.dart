@@ -37,12 +37,6 @@ class WinScreen extends StatelessWidget {
                     color: Colors.white,
                     fontFamily: 'SinglyLinked')),
             const SizedBox(height: 20),
-            Text('Hearts Remaining: ${game.health}',
-                style: const TextStyle(
-                    fontSize: 48,
-                    color: Colors.white,
-                    fontFamily: 'SinglyLinked')),
-            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: onRestart,
               style: ElevatedButton.styleFrom(

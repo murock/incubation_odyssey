@@ -35,9 +35,9 @@ enum EggState {
 
 class Player extends SpriteGroupComponent
     with HasGameRef<MainGame>, CollisionCallbacks {
-  final double _textureWidth = 43;
-  final double _textureHeight = 60;
-  final double _margin = 2;
+  final double textureWidth = 43;
+  final double textureHeight = 60;
+  final double margin = 2;
   late Balloon balloon;
 
   double _speedY = 0.0;
@@ -59,22 +59,22 @@ class Player extends SpriteGroupComponent
     RectangleHitbox hitbox = RectangleHitbox();
     add(hitbox);
 
-    final double damaged1Pos = _textureHeight;
-    final double damaged2Pos = _textureHeight * 2;
-    final double hatchedPos = _textureHeight * 3;
+    final double damaged1Pos = textureHeight;
+    final double damaged2Pos = textureHeight * 2;
+    final double hatchedPos = textureHeight * 3;
 
-    final double penguinXPos = _textureWidth + _margin;
-    final double wyvernXPos = _textureWidth * 2 + _margin;
-    final double lizardXPos = _textureWidth * 3 + _margin;
-    final double dragonXPos = _textureWidth * 4 + _margin;
+    final double penguinXPos = textureWidth + margin;
+    final double wyvernXPos = textureWidth * 2 + margin;
+    final double lizardXPos = textureWidth * 3 + margin;
+    final double dragonXPos = textureWidth * 4 + margin;
     sprites = {
-      EggState.chicken: await _getSprite(srcPosition: Vector2(_margin, 0)),
+      EggState.chicken: await _getSprite(srcPosition: Vector2(margin, 0)),
       EggState.chickenDamaged1:
-          await _getSprite(srcPosition: Vector2(_margin, damaged1Pos)),
+          await _getSprite(srcPosition: Vector2(margin, damaged1Pos)),
       EggState.chickenDamaged2:
-          await _getSprite(srcPosition: Vector2(_margin, damaged2Pos)),
+          await _getSprite(srcPosition: Vector2(margin, damaged2Pos)),
       EggState.chickenHatched:
-          await _getSprite(srcPosition: Vector2(_margin, hatchedPos)),
+          await _getSprite(srcPosition: Vector2(margin, hatchedPos)),
       EggState.penguin: await _getSprite(srcPosition: Vector2(penguinXPos, 0)),
       EggState.penguinDamaged1:
           await _getSprite(srcPosition: Vector2(penguinXPos, damaged1Pos)),
@@ -160,7 +160,7 @@ class Player extends SpriteGroupComponent
   Future<Sprite> _getSprite({required Vector2 srcPosition}) async {
     return await game.loadSprite(
       srcPosition: srcPosition,
-      srcSize: Vector2(_textureWidth, _textureHeight),
+      srcSize: Vector2(textureWidth, textureHeight),
       'player/egg_sprite_sheet.png',
     );
   }

@@ -6,15 +6,11 @@ import 'package:incubation_odyssey/game/power_ups/power_up.dart';
 import 'package:incubation_odyssey/game/variables.dart';
 
 class PowerUpSpawner extends Component with HasGameRef {
-  PowerUpSpawner(
-      {super.children,
-      super.priority,
-      super.key,
-      required this.textureWidth,
-      required this.textureHeight});
-
-  final double textureWidth;
-  final double textureHeight;
+  PowerUpSpawner({
+    super.children,
+    super.priority,
+    super.key,
+  });
 
   late Timer _timer;
 
@@ -57,5 +53,11 @@ class PowerUpSpawner extends Component with HasGameRef {
       timerValue,
       onTick: _spawn,
     );
+  }
+
+  void cleanUp() {
+    children.whereType<PowerUp>().forEach((powerup) {
+      powerup.removeFromParent();
+    });
   }
 }

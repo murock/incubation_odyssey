@@ -23,10 +23,13 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late Player player;
   late TextComponent debugText;
   late BackgroundHolder backgroundHolder;
-  // late AudioPlayer _audioPlayer;
-  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
   late AudioPlayer _audioPlayer;
+  final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
+
+  late PowerUpSpawner _powerUpSpawner;
   int _health = 3;
+
+  SpriteComponent? eggComponent;
 
   late Timer _dashTimer;
   late Timer _dashCooldownTimer;
@@ -52,7 +55,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   @override
   Future<void>? onLoad() async {
     await super.onLoad();
-    //   _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
+
+    _audioPlayer = await FlameAudio.loop('Mx_Title.wav');
 
     // camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
     camera = CameraComponent.withFixedResolution(width: 1920, height: 1080);
@@ -73,12 +77,8 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     add(backgroundHolder);
 
     add(player);
-    add(
-      PowerUpSpawner(
-        textureHeight: 151,
-        textureWidth: 151,
-      ),
-    );
+    _powerUpSpawner = PowerUpSpawner();
+    add(_powerUpSpawner);
 
     add(debugText);
 
@@ -94,10 +94,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     //     anchor: Anchor.center,
     //   ),
     // );
-    PowerUp test = PowerUp(powerUpType: PowerUpType.spike);
-    test.x = 200;
-    test.y = 200;
-    add(test);
   }
 
   @override
@@ -134,12 +130,17 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     health = 3;
     heat = 0;
     player.current = EggState.chicken;
+    player.y = 250;
+    player.x = 200;
+
     resumeEngine();
+    eggComponent?.removeFromParent();
+    _powerUpSpawner.cleanUp();
   }
 
   Future<void> startGame() async {
-    /// _audioPlayer.stop();
-    // _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
+    _audioPlayer.stop();
+    _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
     gameStartedNotifier.value = true;
   }
 
@@ -151,7 +152,44 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> winGame() async {
-    // final Sprite egg =
+    final double hatchedPos = player.textureHeight * 3;
+
+    final Vector2 srcPosition;
+    if (player.current == EggState.penguinHatched) {
+      srcPosition = Vector2(player.textureWidth + player.margin, hatchedPos);
+    } else if (player.current == EggState.wyvernHatched) {
+      srcPosition =
+          Vector2(player.textureWidth * 2 + player.margin, hatchedPos);
+    } else if (player.current == EggState.lizardHatched) {
+      srcPosition =
+          Vector2(player.textureWidth * 2 + player.margin, hatchedPos);
+    } else if (player.current == EggState.lizardHatched) {
+      srcPosition =
+          Vector2(player.textureWidth * 3 + player.margin, hatchedPos);
+    } else if (player.current == EggState.dragonHatched) {
+      srcPosition =
+          Vector2(player.textureWidth * 4 + player.margin, hatchedPos);
+    } else {
+      srcPosition = Vector2(player.margin, hatchedPos);
+    }
+
+    final Sprite egg = await loadSprite(
+      'player/egg_sprite_sheet.png',
+      srcSize: Vector2(player.textureWidth, player.textureHeight),
+      srcPosition: srcPosition,
+    );
+
+    if (eggComponent != null) {
+      eggComponent!.removeFromParent();
+      eggComponent = null;
+    }
+    eggComponent = SpriteComponent(sprite: egg);
+    eggComponent!.x = 100;
+    eggComponent!.y = 100;
+    eggComponent!.scale = Vector2.all(10);
+    await add(eggComponent!);
+
+    await Future.delayed(Duration(milliseconds: 500));
 
     pauseEngine();
     //TODO: _audioPlayer.stop();
