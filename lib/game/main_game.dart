@@ -126,14 +126,16 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void setPlayerSpeed(double speed) {
-    children.whereType<PowerUp>().forEach((powerUp) {
-      powerUp.speed = Variables.powerUpSpeed + speed;
-    });
+    // children.whereType<PowerUp>().forEach((powerUp) {
+    //   powerUp.speed = Variables.powerUpSpeed + speed;
+    // });
+
+    PowerUp.speed = Variables.powerUpSpeed + speed;
 
     Variables.playerSpeed = speed;
 
     backgroundHolder.background.parallax?.baseVelocity =
-        Vector2(Variables.playerSpeed, 1);
+        Vector2(Variables.playerSpeed, 0);
   }
 
   void dash() {

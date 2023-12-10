@@ -35,6 +35,8 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
   final int numFrames;
   final PowerUpType powerUpType;
 
+  double elapsedTime = 0;
+
   final Map<PowerUpType, PowerUpData> imageSourceMap = {
     PowerUpType.fire: PowerUpData(
       srcLoc: 'power_ups/power_up_sprite_sheet.png',
@@ -70,10 +72,10 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
         PowerUpData(srcLoc: 'power_ups/spike.png', size: Vector2(151, 151)),
   };
 
-  static double _speed = Variables.powerUpSpeed + Variables.playerBaseSpeed;
-  set speed(double speed) {
-    _speed = speed;
-  }
+  static double speed = Variables.powerUpSpeed + Variables.playerBaseSpeed;
+  // set speed(double speed) {
+  //   _speed = speed;
+  // }
 
   @override
   FutureOr<void> onLoad() {
@@ -106,9 +108,10 @@ class PowerUp extends SpriteAnimationComponent with HasGameRef {
   @override
   void update(double dt) {
     super.update(dt);
+    elapsedTime += dt * Variables.powerUpSpeed;
 
-    x -= _speed * dt;
-    y = Variables.powerUpPathAmplitude * sin(0.01 * x) +
+    x -= speed * dt;
+    y = Variables.powerUpPathAmplitude * sin(0.01 * elapsedTime) +
         Variables.powerUpHeight;
     if (x < 0 - size.x) removeFromParent();
   }
