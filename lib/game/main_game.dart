@@ -135,7 +135,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
       setPlayerSpeed(Variables.playerBaseSpeed + Variables.dashSpeed);
       _dashTimer.start();
       _dashReady = false;
-      print('cooldownStarted');
       _dashCooldownTimer.start();
     }
   }

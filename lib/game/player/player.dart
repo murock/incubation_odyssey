@@ -40,7 +40,6 @@ class Player extends SpriteGroupComponent
   double _speedY = 0.0;
   final double _yMax = 700;
   bool _isJumping = false;
-  bool _isDashing = false;
 
   @override
   FutureOr<void> onLoad() async {
@@ -120,24 +119,25 @@ class Player extends SpriteGroupComponent
       _speedY = 0.0;
     } else if (!_isJumping) {
       _isJumping = true;
+    } else if (_speedY > 0) {
+      balloon.fall();
     }
 
     super.update(dt);
   }
 
   void dash() {
-    _isDashing = true;
     angle = 0.4;
   }
 
   void stopDash() {
-    _isDashing = false;
     angle = 0;
   }
 
   void jump() {
     if (_isOnGround()) {
       _speedY = -Variables.jumpForce;
+      balloon.jump();
     }
   }
 
