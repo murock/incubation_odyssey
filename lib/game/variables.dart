@@ -16,4 +16,7 @@ class Variables {
   static double initialpowerUpSpawnRate = 4;
 
   static double playerSpeed = 120;
+
+  static double yMax = 900;
+  static double yMin = 200;
 }
