@@ -21,7 +21,7 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   late Player player;
-  late TextComponent debugText;
+
   late BackgroundHolder backgroundHolder;
   late AudioPlayer _audioPlayer;
   final ValueNotifier<double> heatNotifier = ValueNotifier<double>(0.0);
@@ -38,14 +38,14 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   double get heat => heatNotifier.value;
   set heat(double currentheat) {
     heatNotifier.value = currentheat;
-    debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
+
     player.setState(health: _health, heat: heatNotifier.value);
   }
 
   int get health => _health;
   set health(int currentHealth) {
     _health = currentHealth;
-    debugText.text = 'Heat: ${heatNotifier.value} Health: $_health';
+
     player.setState(health: _health, heat: heatNotifier.value);
   }
 
@@ -70,17 +70,12 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
       _dashReady = true;
     });
 
-    debugText =
-        TextComponent(text: 'Heat: ${heatNotifier.value} Health: $_health');
-
     backgroundHolder = BackgroundHolder();
     add(backgroundHolder);
 
     add(player);
     _powerUpSpawner = PowerUpSpawner();
     add(_powerUpSpawner);
-
-    add(debugText);
 
     //debugMode = true;
     // add(Egg());
@@ -158,9 +153,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (player.current == EggState.penguinHatched) {
       srcPosition = Vector2(player.textureWidth + player.margin, hatchedPos);
     } else if (player.current == EggState.wyvernHatched) {
-      srcPosition =
-          Vector2(player.textureWidth * 2 + player.margin, hatchedPos);
-    } else if (player.current == EggState.lizardHatched) {
       srcPosition =
           Vector2(player.textureWidth * 2 + player.margin, hatchedPos);
     } else if (player.current == EggState.lizardHatched) {

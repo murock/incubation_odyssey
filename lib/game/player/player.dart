@@ -166,7 +166,10 @@ class Player extends SpriteGroupComponent
   }
 
   void setState({required int health, required double heat}) {
-    if (heat == 0) {
+    print(health);
+    print(heat);
+    if (heat < Variables.minHeatThreshold &&
+        heat > -Variables.minHeatThreshold) {
       if (health == 3) {
         current = EggState.chicken;
       } else if (health == 2) {
@@ -176,7 +179,7 @@ class Player extends SpriteGroupComponent
       } else {
         current = EggState.chickenHatched;
       }
-    } else if (heat > Variables.minHeatThreshold &&
+    } else if (heat >= Variables.minHeatThreshold &&
         heat < Variables.maxHeatThreshold) {
       if (health == 3) {
         current = EggState.lizard;
@@ -197,7 +200,7 @@ class Player extends SpriteGroupComponent
       } else {
         current = EggState.dragonHatched;
       }
-    } else if (heat < -Variables.minHeatThreshold &&
+    } else if (heat <= -Variables.minHeatThreshold &&
         heat > -Variables.maxHeatThreshold) {
       if (health == 3) {
         current = EggState.penguin;
