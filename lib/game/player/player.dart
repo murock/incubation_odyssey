@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:incubation_odyssey/game/main_game.dart';
 import 'package:incubation_odyssey/game/player/balloon.dart';
 import 'package:incubation_odyssey/game/power_ups/power_up.dart';
@@ -38,7 +39,7 @@ class Player extends SpriteGroupComponent
   late Balloon balloon;
 
   double _speedY = 0.0;
-  final double _yMax = 700;
+  final double _yMax = 900;
   bool _isJumping = false;
 
   @override
@@ -135,10 +136,8 @@ class Player extends SpriteGroupComponent
   }
 
   void jump() {
-    if (_isOnGround()) {
-      _speedY = -Variables.jumpForce;
-      balloon.jump();
-    }
+    _speedY = -Variables.jumpForce;
+    balloon.jump();
   }
 
   bool _isOnGround() {
@@ -213,6 +212,7 @@ class Player extends SpriteGroupComponent
 
     if (other is PowerUp) {
       final PowerUp powerUp = other;
+      final double intialHeat = game.heat;
       if (powerUp.powerUpType == PowerUpType.fire) {
         game.heat += 30;
         other.removeFromParent();
@@ -234,6 +234,13 @@ class Player extends SpriteGroupComponent
       } else if (powerUp.powerUpType == PowerUpType.spike) {
         game.health -= 1;
         other.removeFromParent();
+        FlameAudio.play('ShellCrack.wav');
+      }
+
+      if (intialHeat > game.heat) {
+        FlameAudio.play('Colder.wav');
+      } else if (intialHeat < game.heat) {
+        FlameAudio.play('Warmer.wav');
       }
     }
   }
