@@ -13,7 +13,7 @@ class Variables {
   static double powerUpHeight = 300;
 
   /// spawn rate for power up in seconds
-  static double initialpowerUpSpawnRate = 4;
+  static double maxPowerUpSpawnTime = 4;
 
   static double playerSpeed = 120;
 
