@@ -84,6 +84,6 @@ class MainGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   Future<void> startGame() async {
     _audioPlayer.stop();
-    _audioPlayer = await FlameAudio.play('Mx_Gameplay.wav');
+    _audioPlayer = await FlameAudio.loop('Mx_Gameplay.wav');
   }
 }
